@@ -78,42 +78,79 @@
 <body>
     <h1>Just Fucking Use Tmux</h1>
 
-    <p>You're running a long job over SSH. Your WiFi drops for two seconds. <strong>Connection closed.</strong> Your process? Dead. Your output? Gone.</p>
+    <p>Let me guess. You've got 47 terminal windows open. You SSH'd into a server three hours ago to run a migration. Your WiFi burped for half a second and now that connection is <strong>fucking gone</strong>. The migration? Who knows. Probably half-finished. Your database is now in some cursed intermediate state because you couldn't be bothered to learn a tool that's been around since 2007.</p>
 
-    <p>This is preventable.</p>
+    <p>This is your fault.</p>
 
-    <h2>What tmux does</h2>
+    <p>Every single time you lose work because "my SSH dropped" or "my laptop died" or "I accidentally closed the wrong tab," that's on you. You had the solution sitting right there. Free. Preinstalled on half the servers you touch. But no, you were too busy opening yet another terminal window like some kind of feral raccoon organizing garbage.</p>
 
-    <p>Tmux runs on the server, not in your terminal. Close your laptop, SSH drops, terminal crashes — tmux keeps running. Reconnect later with <code>tmux attach</code> and everything is exactly where you left it.</p>
+    <h2>What the fuck is tmux</h2>
+
+    <p>Tmux is a terminal multiplexer. It runs <strong>on the machine</strong>, not in your precious little terminal emulator. Your terminal is just a window looking at tmux. Close the window? <strong>Tmux doesn't give a shit.</strong> It keeps running. Your processes keep running. Your entire layout, your scrollback, your carefully arranged panes — all still there, waiting for you to pull your head out of your ass and reconnect.</p>
+
+    <p>SSH dies? <code>tmux attach</code>. Laptop battery dies? <code>tmux attach</code>. You accidentally type <code>exit</code> like an idiot? <code>tmux attach</code>. It's always there. It's always waiting. It's the only thing in your workflow that actually has your back.</p>
+
+    <h2>But I use Screen!</h2>
+
+    <p>Screen was released in <strong>1987</strong>. Ronald Reagan was president. The Berlin Wall was still up. People thought New Coke was a good idea. And you're using software from that era to manage your terminal sessions in 2025?</p>
+
+    <p>Screen's default keybinding is Ctrl+a. You know what else uses Ctrl+a? <strong>Every fucking readline application ever made.</strong> Bash. Zsh. Python REPL. Node REPL. Beginning of line? Nope, Screen just ate that. Have fun with that conflict for the rest of your life.</p>
+
+    <p>The last person who answered a Screen question on the internet did it in 2009 on a mailing list that no longer exists. The archives are probably on a floppy disk in someone's garage. Good luck with that.</p>
+
+    <h2>But I just open more terminal windows!</h2>
+
+    <p>Oh, you sweet summer child.</p>
+
+    <p>You've got six terminal windows. Which one has your dev server? Which one has the logs? Which one is SSH'd into production? You don't know. You're clicking through them one by one like you're playing fucking Minesweeper with your own workflow.</p>
+
+    <p>And when you close your laptop? <strong>They're all dead.</strong> Every single one. That dev server you had running? Gone. Those log tails? Gone. That SSH session where you were in the middle of debugging something? Absolutely annihilated. You come back tomorrow and get to set everything up again from scratch, like some kind of productivity Sisyphus, forever pushing terminal windows up a hill only to watch them tumble back down.</p>
+
+    <h2>But iTerm2 has splits!</h2>
+
+    <p>Cool. Does it work on the Linux server you SSH into? No? Then what's the fucking point?</p>
+
+    <p>Your fancy Mac-only terminal emulator with its pretty splits and its tabs and its profiles doesn't help you when you're three machines deep into a production incident at 2 AM. You know what works there? <strong>Tmux.</strong> Because tmux doesn't care what terminal you're using. It doesn't care what OS you're on. It doesn't care if you're connecting from your MacBook, a Chromebook, or a fucking potato with an SSH client.</p>
+
+    <p>iTerm2's own documentation tells you to use tmux. They literally built a "tmux integration mode" because they know their native splits are toys compared to the real thing.</p>
+
+    <h2>But VS Code has a terminal!</h2>
+
+    <p>VS Code's terminal is a terminal the same way a hotel room microwave is a kitchen. Sure, technically you can heat things up. But you're not cooking Thanksgiving dinner in there.</p>
+
+    <p>Switch VS Code projects and your terminals evaporate. Your SSH connection drops and everything dies. The terminal exists to run <code>npm install</code> and maybe <code>git status</code>. It is not a workflow. It is not a tool. It is a checkbox on a feature list so Microsoft can say "yes, we have a terminal."</p>
 
     <h2>The commands</h2>
+
+    <p>Fine. Here. This is all you need:</p>
 
 <pre><code><span class="muted"># Start tmux</span>
 tmux
 
-<span class="muted"># Detach (leave it running)</span>
+<span class="muted"># Detach (it keeps running, you can leave)</span>
 Ctrl+b d
 
-<span class="muted"># Reattach</span>
+<span class="muted"># Come back later, reattach</span>
 tmux attach
 
-<span class="muted"># Split screen</span>
+<span class="muted"># Split your screen because you're not an animal</span>
 Ctrl+b %    <span class="muted"># vertical</span>
-Ctrl+b "    <span class="muted"># horizontal</span></code></pre>
+Ctrl+b "    <span class="muted"># horizontal</span>
 
-    <p>That's it. Learn the rest when you need it.</p>
+<span class="muted"># Move between panes</span>
+Ctrl+b arrow-keys</code></pre>
 
-    <h2>The alternatives suck</h2>
-
-    <p><strong>Screen</strong> — Released 1987. Cryptic. Dead community.</p>
-    <p><strong>Multiple terminals</strong> — No persistence. Laptop closes, everything dies.</p>
-    <p><strong>iTerm2 splits</strong> — Mac only. Can't detach. Useless over SSH.</p>
+    <p>That's it. That's the whole thing. Five commands. You could learn this in the time it takes to complain about losing your SSH session. But instead you'll keep doing what you're doing, losing work, and wondering why your life is hard.</p>
 
     <hr>
 
-    <p>Stop losing work. Install it.</p>
+    <p>Stop being a victim of your own laziness. Stop blaming your WiFi. Stop blaming your laptop battery. Stop blaming SSH. The tool exists. It's free. It works. It's been battle-tested by millions of developers who got tired of losing their shit.</p>
+
+    <p><strong>Just fucking use tmux.</strong></p>
 
     <pre><code>sudo apt install tmux && tmux</code></pre>
+
+    <p class="muted">Or brew install tmux. Or pacman -S tmux. Or whatever. It's everywhere. You have no excuse.</p>
 
     <footer>
         <p>Inspired by <a href="https://justfuckingusehtml.com">justfuckingusehtml.com</a></p>
