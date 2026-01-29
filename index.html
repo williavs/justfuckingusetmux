@@ -120,6 +120,28 @@
 
     <p>Switch VS Code projects and your terminals evaporate. Your SSH connection drops and everything dies. The terminal exists to run <code>npm install</code> and maybe <code>git status</code>. It is not a workflow. It is not a tool. It is a checkbox on a feature list so Microsoft can say "yes, we have a terminal."</p>
 
+    <h2>But WezTerm has multiplexing!</h2>
+
+    <p>Ah yes, WezTerm. The terminal emulator that promised to make tmux obsolete. Let's talk about that.</p>
+
+    <p>WezTerm's multiplexing requires WezTerm to be installed <strong>on both the client AND the server</strong>. And not just installed — the <strong>same version</strong>. Server running 0.20? Client running 0.21? Error. "Please install the same version of wezterm on both the client and server!" Imagine seeing that shit at 2 AM during an outage. Meanwhile tmux just needs to be on the server. That's it. And it's already there because every sane sysadmin installed it years ago.</p>
+
+    <p>Oh, and WezTerm's multiplexing can't actually detach and reattach sessions. The maintainer admitted it: "We still don't have a formal dynamic detach/attach UX." Users keep asking "How do we save a session for later use after reboot?" The answer is: <strong>you don't.</strong> There's a "resurrect" plugin that kinda sorta works as a band-aid, but it "does not play well" with actual multiplexing. Incredible.</p>
+
+    <p>The funniest part? WezTerm power users eventually just... run tmux inside WezTerm. They went through the whole five stages of grief — denial, configuring Lua files, more denial, installing plugins — and ended up right back where they started. Terminal emulators come and go. Tmux stays.</p>
+
+    <h2>But Ghostty is the future!</h2>
+
+    <p>Mitchell Hashimoto made Ghostty. Mitchell Hashimoto also said he wants tmux to "disappear." Bold words from a guy who <strong>immediately followed that up</strong> by admitting tmux "still solves a lot of problems" that Ghostty can't solve.</p>
+
+    <p>You know what Ghostty can't do? <strong>Session persistence over SSH.</strong> The thing that makes tmux actually useful. Close Ghostty, your splits are gone. SSH connection drops, your work is gone. Someone asked about detach/reattach on their GitHub and got told it's "on the roadmap." It's been on the roadmap. Meanwhile tmux has had this feature for <strong>eighteen fucking years.</strong></p>
+
+    <p>There's a blog post called "You Might Not Need Tmux" that Ghostty fans love to share. The author's solution to replacing tmux? <strong>Use three separate tools instead.</strong> Shpool for persistence (which has "active bugs" with terminal state restoration). A window manager for splits. SSH config hacks with RemoteCommand. Three buggy tools duct-taped together to poorly replicate what one tool does out of the box. That's not progress. That's a coping mechanism.</p>
+
+    <p>The best part? Ghostty users complain that running tmux inside Ghostty "feels sluggish." So Ghostty is fast... unless you use the tool you actually need for remote work... which makes it slow. You've replaced a solved problem with a new problem. Congratulations.</p>
+
+    <p>Look, Ghostty is genuinely fast and nice for local work. But "I don't need tmux" really just means "I don't SSH into servers" or "I haven't been burned yet." Give it time.</p>
+
     <h2>The commands</h2>
 
     <p>Fine. Here. This is all you need:</p>
