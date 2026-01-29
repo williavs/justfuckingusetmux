@@ -4,348 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Just Fucking Use Tmux</title>
-    <meta name="description" content="Stop losing your work. Stop juggling terminal windows. Stop being a productivity amateur. Just fucking use tmux.">
+    <meta name="description" content="Stop losing your work. Just fucking use tmux.">
     <meta property="og:title" content="Just Fucking Use Tmux">
-    <meta property="og:description" content="Your SSH dropped. Your laptop died. Your work is gone. This didn't have to happen.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://justfuckingusetmux.com">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖥️</text></svg>">
+    <meta property="og:description" content="Your SSH dropped. Your work is gone. This didn't have to happen.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>></text></svg>">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg: #0a0a0a;
-            --fg: #c9d1d9;
-            --green: #00ff88;
-            --green-dim: #00cc6a;
-            --border: #30363d;
-            --muted: #8b949e;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
-            background: var(--bg);
-            color: var(--fg);
-            line-height: 1.7;
+            font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+            background: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.8;
             font-size: 18px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
             padding: 4rem 2rem;
+            max-width: 700px;
+            margin: 0 auto;
         }
 
         h1 {
-            font-size: clamp(2.5rem, 8vw, 4rem);
-            color: var(--green);
-            margin-bottom: 1rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-
-        h1 span {
-            color: var(--fg);
-        }
-
-        .tagline {
-            font-size: 1.25rem;
-            color: var(--muted);
-            margin-bottom: 3rem;
-            border-left: 3px solid var(--green);
-            padding-left: 1rem;
+            font-size: 2.5rem;
+            color: #00ff88;
+            margin-bottom: 2rem;
         }
 
         h2 {
-            font-size: 1.5rem;
-            color: var(--green);
-            margin-top: 3rem;
-            margin-bottom: 1rem;
-            font-weight: 600;
+            color: #00ff88;
+            margin: 3rem 0 1rem;
+            font-size: 1.25rem;
         }
 
-        p {
-            margin-bottom: 1.5rem;
-        }
+        p { margin-bottom: 1.5rem; }
 
-        strong {
-            color: var(--green);
-            font-weight: 600;
-        }
-
-        .highlight {
-            background: linear-gradient(transparent 60%, rgba(0, 255, 136, 0.2) 60%);
-        }
+        strong { color: #00ff88; }
 
         code {
             background: #161b22;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.9em;
-            color: var(--green);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            color: #00ff88;
         }
 
-        .scenario {
+        pre {
             background: #161b22;
-            border: 1px solid var(--border);
-            border-left: 3px solid #f85149;
             padding: 1.5rem;
-            margin: 2rem 0;
-            border-radius: 0 6px 6px 0;
-        }
-
-        .scenario.good {
-            border-left-color: var(--green);
-        }
-
-        .scenario-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #f85149;
-            margin-bottom: 0.5rem;
-        }
-
-        .scenario.good .scenario-label {
-            color: var(--green);
-        }
-
-        ul {
+            border-radius: 6px;
             margin: 1.5rem 0;
-            padding-left: 1.5rem;
-        }
-
-        li {
-            margin-bottom: 0.75rem;
-        }
-
-        li::marker {
-            color: var(--green);
-        }
-
-        .divider {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 3rem 0;
-        }
-
-        .alternatives {
-            display: grid;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .alt-item {
-            background: #161b22;
-            border: 1px solid var(--border);
-            padding: 1rem 1.25rem;
-            border-radius: 6px;
-        }
-
-        .alt-name {
-            color: #f85149;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .alt-reason {
-            color: var(--muted);
-            font-size: 0.9rem;
-        }
-
-        .commands {
-            background: #161b22;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1.5rem;
-            margin: 2rem 0;
             overflow-x: auto;
         }
 
-        .commands pre {
-            margin: 0;
-            color: var(--fg);
+        pre code {
+            background: none;
+            padding: 0;
         }
 
-        .commands .comment {
-            color: var(--muted);
+        .muted { color: #8b949e; }
+
+        hr {
+            border: none;
+            border-top: 1px solid #30363d;
+            margin: 3rem 0;
         }
 
-        .commands .cmd {
-            color: var(--green);
-        }
-
-        .cta {
-            text-align: center;
-            margin-top: 4rem;
-            padding: 3rem;
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, transparent 100%);
-            border: 1px solid var(--green-dim);
-            border-radius: 8px;
-        }
-
-        .cta h2 {
-            margin-top: 0;
-            font-size: 2rem;
-        }
-
-        .cta p {
-            margin-bottom: 0;
-            color: var(--muted);
-        }
-
-        .cta code {
-            font-size: 1.25rem;
-            padding: 0.5rem 1rem;
-        }
+        a { color: #00ff88; }
 
         footer {
             margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: var(--muted);
+            color: #8b949e;
             font-size: 0.9rem;
-        }
-
-        footer a {
-            color: var(--green);
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 2rem 1rem;
-            }
-
-            body {
-                font-size: 16px;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Just Fucking Use <span>Tmux</span></h1>
-        <p class="tagline">Your SSH dropped. Your laptop died. Your terminal crashed. Your work is gone. This didn't have to happen.</p>
+    <h1>Just Fucking Use Tmux</h1>
 
-        <p>You're three hours into a database migration over SSH. Your WiFi hiccups for two seconds. <strong>Connection closed.</strong> The migration? Who fucking knows. Your carefully arranged terminal layout? Gone. The 500 lines of output you needed to review? Evaporated into the void.</p>
+    <p>You're running a long job over SSH. Your WiFi drops for two seconds. <strong>Connection closed.</strong> Your process? Dead. Your output? Gone.</p>
 
-        <p>This is what happens when you don't use tmux. And it's <span class="highlight">completely preventable</span>.</p>
+    <p>This is preventable.</p>
 
-        <h2>What Tmux Actually Does</h2>
+    <h2>What tmux does</h2>
 
-        <p>Tmux is a <strong>terminal multiplexer</strong>. It runs on the server (or your machine), not in your terminal emulator. Your terminal is just a window into tmux. Close the window? Tmux keeps running. SSH drops? Tmux keeps running. Laptop bursts into flames? Tmux. Keeps. Running.</p>
+    <p>Tmux runs on the server, not in your terminal. Close your laptop, SSH drops, terminal crashes — tmux keeps running. Reconnect later with <code>tmux attach</code> and everything is exactly where you left it.</p>
 
-        <div class="scenario">
-            <div class="scenario-label">Without Tmux</div>
-            <p style="margin-bottom: 0;">SSH connection drops &rarr; Process killed &rarr; 3 hours of work lost &rarr; You cry</p>
-        </div>
+    <h2>The commands</h2>
 
-        <div class="scenario good">
-            <div class="scenario-label">With Tmux</div>
-            <p style="margin-bottom: 0;">SSH connection drops &rarr; Reconnect &rarr; <code>tmux attach</code> &rarr; Everything exactly where you left it</p>
-        </div>
+<pre><code><span class="muted"># Start tmux</span>
+tmux
 
-        <h2>The Alternatives Are Garbage</h2>
+<span class="muted"># Detach (leave it running)</span>
+Ctrl+b d
 
-        <div class="alternatives">
-            <div class="alt-item">
-                <div class="alt-name">GNU Screen</div>
-                <div class="alt-reason">Released in 1987. Ctrl+a conflicts with readline. The last person who solved your Screen problem did it in 2009 on a mailing list that no longer exists.</div>
-            </div>
-            <div class="alt-item">
-                <div class="alt-name">Multiple Terminal Windows</div>
-                <div class="alt-reason">Zero persistence. Close your laptop and everything dies. 47 windows across 6 workspaces and you have no idea which one has your dev server.</div>
-            </div>
-            <div class="alt-item">
-                <div class="alt-name">iTerm2 Splits</div>
-                <div class="alt-reason">Mac-only. No detach/reattach. Doesn't work when you SSH to a server. Which is when you actually need it.</div>
-            </div>
-            <div class="alt-item">
-                <div class="alt-name">VS Code Terminal</div>
-                <div class="alt-reason">Switch projects and your terminals die. SSH disconnects and your terminals die. Everything dies. Always.</div>
-            </div>
-            <div class="alt-item">
-                <div class="alt-name">Multiple SSH Connections</div>
-                <div class="alt-reason">Resource waste. Connection limits. Re-authenticating constantly. No shared state. Amateur hour.</div>
-            </div>
-        </div>
+<span class="muted"># Reattach</span>
+tmux attach
 
-        <h2>What You Get</h2>
+<span class="muted"># Split screen</span>
+Ctrl+b %    <span class="muted"># vertical</span>
+Ctrl+b "    <span class="muted"># horizontal</span></code></pre>
 
-        <ul>
-            <li><strong>Session persistence.</strong> Start a job, detach, go home, reattach. Your scrollback, your layout, your running processes &mdash; all there.</li>
-            <li><strong>Multiplexing.</strong> Split panes. Multiple windows. Multiple sessions. One SSH connection, unlimited terminals.</li>
-            <li><strong>Scriptable environments.</strong> One command to spin up your entire dev setup. Same layout every time.</li>
-            <li><strong>50,000 lines of scrollback.</strong> That error message from 20 minutes ago? Scroll up and find it. Search for it. Copy it.</li>
-            <li><strong>Remote pairing.</strong> Two people attach to the same session. Both see the same thing. Both can type. No screen sharing latency.</li>
-            <li><strong>Works everywhere.</strong> Linux, Mac, WSL, servers, containers. Same tool, same workflow, same muscle memory.</li>
-        </ul>
+    <p>That's it. Learn the rest when you need it.</p>
 
-        <hr class="divider">
+    <h2>The alternatives suck</h2>
 
-        <h2>The Only Commands You Need</h2>
+    <p><strong>Screen</strong> — Released 1987. Cryptic. Dead community.</p>
+    <p><strong>Multiple terminals</strong> — No persistence. Laptop closes, everything dies.</p>
+    <p><strong>iTerm2 splits</strong> — Mac only. Can't detach. Useless over SSH.</p>
 
-        <div class="commands">
-<pre><span class="comment"># Start a new session</span>
-<span class="cmd">tmux</span>
+    <hr>
 
-<span class="comment"># Start a named session</span>
-<span class="cmd">tmux new -s project-name</span>
+    <p>Stop losing work. Install it.</p>
 
-<span class="comment"># Detach from session</span>
-<span class="cmd">Ctrl+b d</span>
+    <pre><code>sudo apt install tmux && tmux</code></pre>
 
-<span class="comment"># List sessions</span>
-<span class="cmd">tmux ls</span>
-
-<span class="comment"># Reattach to session</span>
-<span class="cmd">tmux attach</span>
-
-<span class="comment"># Split pane vertically</span>
-<span class="cmd">Ctrl+b %</span>
-
-<span class="comment"># Split pane horizontally</span>
-<span class="cmd">Ctrl+b "</span>
-
-<span class="comment"># Navigate panes</span>
-<span class="cmd">Ctrl+b arrow-keys</span></pre>
-        </div>
-
-        <p>That's it. That's the whole thing. You can learn the rest later. Or never. These commands alone will save your ass more times than you can count.</p>
-
-        <hr class="divider">
-
-        <h2>Stop Making Excuses</h2>
-
-        <p><em>"The keybindings are weird."</em><br>They're fine. Ctrl+b, then a key. You'll have it memorized in a day. Remap them if you want, tmux doesn't care.</p>
-
-        <p><em>"I don't work on remote servers."</em><br>Cool, use it locally. Session persistence works the same way. Reboot your machine, your tmux sessions survive (with resurrect plugin). Your terminal windows don't.</p>
-
-        <p><em>"My terminal emulator has splits."</em><br>Can you detach from them and reattach from another machine? Can you SSH to a server and use them there? No? Then they're not the same thing.</p>
-
-        <p><em>"I'll learn it later."</em><br>You've been saying that for years. It takes 15 minutes to learn the basics. The ROI is infinite.</p>
-
-        <div class="cta">
-            <h2>Just Fucking Use Tmux</h2>
-            <p>Install it. Start it. Never lose work again.</p>
-            <br>
-            <code>sudo apt install tmux && tmux</code>
-        </div>
-
-        <footer>
-            <p>Inspired by the <a href="https://justfuckingusehtml.com" target="_blank">Just Fucking Use</a> movement.</p>
-            <p style="margin-top: 0.5rem;">Once you use tmux, you never go back.</p>
-        </footer>
-    </div>
+    <footer>
+        <p>Inspired by <a href="https://justfuckingusehtml.com">justfuckingusehtml.com</a></p>
+    </footer>
 </body>
 </html>
