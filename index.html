@@ -92,11 +92,11 @@
 
     <h2>But I use Screen!</h2>
 
-    <p>Screen was released in <strong>1987</strong>. Ronald Reagan was president. The Berlin Wall was still up. People thought New Coke was a good idea. And you're using software from that era to manage your terminal sessions in 2025?</p>
+    <p>Screen was released in <strong>1987</strong>. Ronald Reagan was president. The Berlin Wall was still up. People thought New Coke was a good idea. And you're using software from that era to manage your terminal sessions in 2026?</p>
 
     <p>Screen's default keybinding is Ctrl+a. You know what else uses Ctrl+a? <strong>Every fucking readline application ever made.</strong> Bash. Zsh. Python REPL. Node REPL. Beginning of line? Nope, Screen just ate that. Have fun with that conflict for the rest of your life.</p>
 
-    <p>The last person who answered a Screen question on the internet did it in 2009 on a mailing list that no longer exists. The archives are probably on a floppy disk in someone's garage. Good luck with that.</p>
+    <p>"But Screen came back!" Oh, it sure did. After decades of nothing, Screen 5.0 dropped in 2024 — and a security audit promptly found a <strong>local root exploit</strong> in it. Plus TTY hijacking. Four CVEs. The comeback tour lasted long enough to hand out root on Arch and NetBSD before 5.0.1 patched it up. Thirty-seven years of experience and the big return immediately face-planted into the one thing terminal software has to not do.</p>
 
     <h2>But I just open more terminal windows!</h2>
 
@@ -124,23 +124,35 @@
 
     <p>Ah yes, WezTerm. The terminal emulator that promised to make tmux obsolete. Let's talk about that.</p>
 
-    <p>WezTerm's multiplexing requires WezTerm to be installed <strong>on both the client AND the server</strong>. And not just installed — the <strong>same version</strong>. Server running 0.20? Client running 0.21? Error. "Please install the same version of wezterm on both the client and server!" Imagine seeing that shit at 2 AM during an outage. Meanwhile tmux just needs to be on the server. That's it. And it's already there because every sane sysadmin installed it years ago.</p>
+    <p>WezTerm's multiplexing requires WezTerm to be installed <strong>on both the client AND the server</strong>. And not just installed — the <strong>same version</strong>. Server running one build, client running another? Error. "Please install the same version of wezterm on both the client and server!" Imagine seeing that shit at 2 AM during an outage. Meanwhile tmux just needs to be on the server. That's it. And it's already there because every sane sysadmin installed it years ago.</p>
 
-    <p>Oh, and WezTerm's multiplexing can't actually detach and reattach sessions. The maintainer admitted it: "We still don't have a formal dynamic detach/attach UX." Users keep asking "How do we save a session for later use after reboot?" The answer is: <strong>you don't.</strong> There's a "resurrect" plugin that kinda sorta works as a band-aid, but it "does not play well" with actual multiplexing. Incredible.</p>
+    <p>And about those versions: WezTerm's last <strong>stable release was February 2024</strong>. It's been nightly builds ever since — two and a half years of them. There's an open issue where users are literally begging for a stable release "once a year or so." So that same-version requirement you need for multiplexing? You get to satisfy it with nightlies. On your production servers. Bold strategy.</p>
 
     <p>The funniest part? WezTerm power users eventually just... run tmux inside WezTerm. They went through the whole five stages of grief — denial, configuring Lua files, more denial, installing plugins — and ended up right back where they started. Terminal emulators come and go. Tmux stays.</p>
 
     <h2>But Ghostty is the future!</h2>
 
-    <p>Mitchell Hashimoto made Ghostty. Mitchell Hashimoto also said he wants tmux to "disappear." Bold words from a guy who <strong>immediately followed that up</strong> by admitting tmux "still solves a lot of problems" that Ghostty can't solve.</p>
+    <p>Ghostty is genuinely fast. Ghostty is genuinely nice. And Ghostty <strong>cannot detach a session</strong>, because they decided it never will: it's officially "not a multiplexer." Session persistence, detach/reattach, remote panes — scoped out on purpose. Their own answer for that stuff? Use tmux or zellij. The future of terminals ships with a note telling you to go use the thing from 2007.</p>
 
-    <p>You know what Ghostty can't do? <strong>Session persistence over SSH.</strong> The thing that makes tmux actually useful. Close Ghostty, your splits are gone. SSH connection drops, your work is gone. Someone asked about detach/reattach on their GitHub and got told it's "on the roadmap." It's been on the roadmap. Meanwhile tmux has had this feature for <strong>eighteen fucking years.</strong></p>
+    <p>So what did the community do? They took Ghostty's terminal parser, compiled it to WebAssembly, and started building session-persistence daemons out of the parts. One of them describes itself as — I swear this is real — <strong>"think screen(1) but in Go."</strong> Congratulations, everyone. We speedran forty years of terminal history and arrived back at Screen. There are proof-of-concept forks for persistent SSH sessions, third-party attach/detach tools, whole GitHub discussions of people rebuilding tmux around a terminal whose pitch was that you wouldn't need tmux.</p>
 
     <p>There's a blog post called "You Might Not Need Tmux" that Ghostty fans love to share. The author's solution to replacing tmux? <strong>Use three separate tools instead.</strong> Shpool for persistence (which has "active bugs" with terminal state restoration). A window manager for splits. SSH config hacks with RemoteCommand. Three buggy tools duct-taped together to poorly replicate what one tool does out of the box. That's not progress. That's a coping mechanism.</p>
 
-    <p>The best part? Ghostty users complain that running tmux inside Ghostty "feels sluggish." So Ghostty is fast... unless you use the tool you actually need for remote work... which makes it slow. You've replaced a solved problem with a new problem. Congratulations.</p>
+    <p>Look, Ghostty is great for local work. But "I don't need tmux" really just means "I don't SSH into servers" or "I haven't been burned yet." Give it time.</p>
 
-    <p>Look, Ghostty is genuinely fast and nice for local work. But "I don't need tmux" really just means "I don't SSH into servers" or "I haven't been burned yet." Give it time.</p>
+    <h2>But Zellij is the modern one!</h2>
+
+    <p>Zellij is the strongest objection on this page, so let's be fair: it's good. Written in Rust, discoverable keybindings, floating panes, a nice first-run experience. If tmux didn't exist, Zellij would be a fine thing to build.</p>
+
+    <p>But tmux does exist. It's on the server already. Zellij isn't — so now you're installing a chunky Rust binary with a WebAssembly plugin runtime on every box you touch, assuming the box's package manager even has a recent version, which it doesn't, so now you're curling binaries onto production like it's 2012. Five years in and it's still version 0.4x. Meanwhile tmux shipped 3.7c <strong>this month</strong> — the "old" tool has newer releases than the modern one has stable APIs.</p>
+
+    <p>Zellij's own fans say it: great on your laptop. The moment the work is on a machine that isn't yours, you're back to the tool that's already everywhere. There's a reason the Zellij-vs-tmux articles all end with "if you're happy on tmux, stay."</p>
+
+    <h2>It's 2026. Your agents live in tmux.</h2>
+
+    <p>Here's the part nobody saw coming: the AI coding agents everyone runs now? <strong>They live in tmux.</strong> Detached sessions running unattended agents overnight. <code>send-keys</code> as the universal API for driving a terminal program that thinks. Robert C. Martin — Uncle Bob, the Clean Code guy — published an agent-swarm orchestrator this year and its foundation is literally tmux sessions and git worktrees. The hot new multi-agent frameworks are tmux scripts wearing a trench coat.</p>
+
+    <p>Think about why. An agent needs exactly what you need at 2 AM: a session that survives disconnects, that can be observed without being interrupted, that something else can attach to and read. That problem was solved in 2007. Every terminal emulator that "makes tmux obsolete" solves the easy half — pretty splits on your laptop — and punts on the half that matters. The agents don't care about your ligatures. They need a session that doesn't die.</p>
 
     <h2>The commands</h2>
 
